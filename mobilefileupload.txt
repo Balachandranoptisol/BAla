@@ -1,0 +1,22 @@
+var httpRequest = HttpContext.Current.Request;
+                if (httpRequest.Files.Count > 0)
+                {
+                    foreach (string file in httpRequest.Files)
+                    {
+                        HttpPostedFile postedFileItem = httpRequest.Files[file];
+                        string ext = Path.GetExtension(postedFileItem.FileName);
+                        Stream inputStream = postedFileItem.InputStream;
+                        string fileName = postedFileItem.FileName;
+                        string filePathPdf = System.Web.HttpContext.Current.Server.MapPath("~/" + "//PdfConverstion");
+ 
+                        if (!Directory.Exists(filePathPdf))
+                        {
+                            Directory.CreateDirectory(filePathPdf);
+                        }
+ 
+                        Byte[] Contents = new BinaryReader(httpRequest.Files[file].InputStream).ReadBytes(httpRequest.Files[file].ContentLength);
+                        filePathPdf = filePathPdf + "\\" + postedFileItem.FileName;
+                        File.WriteAllBytes(filePathPdf, Contents);
+ 
+                    }
+                }
